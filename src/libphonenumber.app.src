@@ -1,0 +1,12 @@
+{application, libphonenumber,
+ [
+  {description, "Port driver for libphonenumber"},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { libphonenumber_app, []}},
+  {env, []}
+ ]}.
