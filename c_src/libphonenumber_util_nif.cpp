@@ -168,8 +168,7 @@ static ERL_NIF_TERM GetSupportedRegions_nif(ErlNifEnv* env, int argc, const ERL_
 
     for (set<string>::iterator it=regions.begin(); it!=regions.end(); ++it, i++){
         region = enif_make_new_binary(env, it->size(), &ret);
-        region[0] = (*it)[0]; 
-        region[1] = (*it)[1];
+        std::copy(it->begin(), it->end(), region);
         arr[i] = ret;
         ret = 0;
     }
@@ -195,8 +194,7 @@ static ERL_NIF_TERM GetRegionCodesForCountryCallingCode_nif(ErlNifEnv* env, int 
 
     for (list<string>::iterator it=regions.begin(); it!=regions.end(); ++it, i++){
         region = enif_make_new_binary(env, it->size(), &ret);
-        region[0] = (*it)[0]; 
-        region[1] = (*it)[1];
+        std::copy(it->begin(), it->end(), region);
         arr[i] = ret;
         ret = 0;
     }
