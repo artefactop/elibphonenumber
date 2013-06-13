@@ -24,13 +24,13 @@ typedef struct {
 
 static bool enif_get_phonenumber_format(ErlNifEnv* env, const ERL_NIF_TERM term, PhoneNumberUtil::PhoneNumberFormat* number_format){
     unsigned int len;
-    char* buf;
 
     if (!enif_get_atom_length(env, term, &len, ERL_NIF_LATIN1)){
         return false;
     }
 
-    if (!enif_get_atom(env, term, buf, len, ERL_NIF_LATIN1)) {
+    char buf[len+1];
+    if (!enif_get_atom(env, term, buf, len+1, ERL_NIF_LATIN1)) {
         return false;
     } 
 
@@ -50,14 +50,14 @@ static bool enif_get_phonenumber_format(ErlNifEnv* env, const ERL_NIF_TERM term,
 }
 
 static bool enif_get_boolean(ErlNifEnv* env, const ERL_NIF_TERM term, bool* boolean){
-    unsigned int len;
-    char* buf;
+    unsigned int len;    
 
     if (!enif_get_atom_length(env, term, &len, ERL_NIF_LATIN1)){
         return false;
-    }  
+    }
 
-    if (!enif_get_atom(env, term, buf, len, ERL_NIF_LATIN1)) {
+    char buf[len+1];
+    if (!enif_get_atom(env, term, buf, len+1, ERL_NIF_LATIN1)) {
         return false;
     } 
 
@@ -111,7 +111,7 @@ static bool enif_inspect_phonenumber(ErlNifEnv* env, const ERL_NIF_TERM term, Er
         return false;
     }
     nifPhoneNumber->italian_leading_zero = boolean;
-return true;
+
     // Get Extension
     if (!enif_inspect_iolist_as_binary(env, array[4], &bin)){
         return false;
