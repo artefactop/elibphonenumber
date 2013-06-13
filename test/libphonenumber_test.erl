@@ -1,15 +1,9 @@
 -module(libphonenumber_test).
 
+-include_lib("eunit/include/eunit.hrl").
 
 
-
-
-
-
-
-
-
-test_is_alpha_number() ->
+is_alpha_number_test() ->
 	true = libphonenumber_util:is_alpha_number(<<"1800 six-flags">>), 
 	true = libphonenumber_util:is_alpha_number(<<"1800 six-flags ext. 1234">>), 
 	true = libphonenumber_util:is_alpha_number(<<"+800 six-flags">>), 

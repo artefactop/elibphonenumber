@@ -148,7 +148,7 @@ static void CreatePhoneNumberFromNif(ErlNifPhoneNumber* nifPhoneNumber, PhoneNum
     phoneNumber->set_raw_input(nifPhoneNumber->raw_input);
     phoneNumber->set_preferred_domestic_carrier_code(nifPhoneNumber->preferred_domestic_carrier_code);
     if (::i18n::phonenumbers::PhoneNumber_CountryCodeSource_IsValid(nifPhoneNumber->country_code_source)) {
-            phoneNumber->set_country_code_source(static_cast< ::i18n::phonenumbers::PhoneNumber_CountryCodeSource >(nifPhoneNumber->country_code_source));
+        phoneNumber->set_country_code_source(static_cast< ::i18n::phonenumbers::PhoneNumber_CountryCodeSource >(nifPhoneNumber->country_code_source));
     }
 }
 
@@ -230,7 +230,6 @@ static ERL_NIF_TERM ConvertAlphaCharactersInNumber_nif(ErlNifEnv* env, int argc,
 
     ERL_NIF_TERM ret;
     unsigned char *number = enif_make_new_binary(env, str.size(), &ret);
-
     std::copy(str.begin(), str.end(), number);
     
     return ret;
@@ -250,7 +249,6 @@ static ERL_NIF_TERM NormalizeDigitsOnly_nif(ErlNifEnv* env, int argc, const ERL_
 
     ERL_NIF_TERM ret;
     unsigned char *number = enif_make_new_binary(env, str.size(), &ret);
-
     std::copy(str.begin(), str.end(), number);
     
     return ret;
@@ -272,7 +270,6 @@ static ERL_NIF_TERM GetNationalSignificantNumber_nif(ErlNifEnv* env, int argc, c
 
     ERL_NIF_TERM ret;
     unsigned char *number = enif_make_new_binary(env, str.size(), &ret);
-
     std::copy(str.begin(), str.end(), number);
     
     return ret;
@@ -315,7 +312,6 @@ static ERL_NIF_TERM Format_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv
 
     ERL_NIF_TERM ret;
     unsigned char *number = enif_make_new_binary(env, str.size(), &ret);
-
     std::copy(str.begin(), str.end(), number);
     
     return ret;
