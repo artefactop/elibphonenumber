@@ -130,7 +130,7 @@ format(_PhoneNumber, _PhoneNumberFormat) ->
     PhoneNumber::phonenumber(),
     PhoneNumberFormat::phonenumber_format(),
     UserDefinedFormats::list(phonenumber_format())
-    ) -> FormattedNumber::binary().
+    ) -> FormattedNumber::binary(). %%TODO
 
 format_by_pattern(_PhoneNumber, _PhoneNumberFormat, _UserDefinedFormats) ->
     exit(nif_library_not_loaded).
@@ -155,7 +155,7 @@ format_national_number_with_preferred_carrier_code(_PhoneNumber, _FallbackCarrie
     PhoneNumber::phonenumber(),
     RegionCallingFrom::binary(),
     WithFormatting::boolean()
-    ) -> FormattedNumber::binary().
+    ) -> FormattedNumber::binary(). %%TODO
 
 format_number_for_mobile_dialing(_PhoneNumber, _RegionCallingFrom, _WithFormatting) ->
     exit(nif_library_not_loaded).

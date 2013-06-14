@@ -13,8 +13,8 @@
     set_national_number/2,
 %   clear_national_number/1,
 %   has_extension/1,
-%   get_extension/1,
-%   set_extension/2,
+   get_extension/1,
+   set_extension/2,
 %   clear_extension/1,
     set_italian_leading_zero/2,
 %   is_italian_leading_zero/1,
@@ -73,8 +73,16 @@ set_national_number(_NationalNumber, #phonenumber{}=PhoneNumber) ->
 
 
 % -spec has_extension(PhoneNumber::phonenumber()) -> boolean().
-% -spec get_extension(PhoneNumber::phonenumber()) -> binary().
-% -spec set_extension(Extension::binary(), PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
+-spec get_extension(PhoneNumber::phonenumber()) -> binary().
+
+get_extension(PhoneNumber) ->
+    PhoneNumber#phonenumber.extension.
+
+-spec set_extension(Extension::binary(), PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
+
+set_extension(_Extension, PhoneNumber) ->
+    PhoneNumber#phonenumber{extension = _Extension}.
+
 % -spec clear_extension(PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
 

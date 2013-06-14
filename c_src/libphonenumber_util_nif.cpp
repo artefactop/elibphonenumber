@@ -314,7 +314,115 @@ static ERL_NIF_TERM Format_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv
     
     return ret;
 }
+/*
+static ERL_NIF_TERM FormatByPattern_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    ErlNifPhoneNumber nifPhoneNumber;
+    if (!enif_inspect_phonenumber(env, argv[0], &nifPhoneNumber)){
+        return enif_make_badarg(env);
+    }
 
+    PhoneNumber phoneNumber;
+    CreatePhoneNumberFromNif(&nifPhoneNumber, &phoneNumber);
+
+    PhoneNumberUtil::PhoneNumberFormat phoneNumberFormat;
+    if (!enif_get_phonenumber_format(env, argv[1], &phoneNumberFormat)){
+        return enif_make_badarg(env);
+    }
+
+    //TODO parse pattern list
+
+    PhoneNumberUtil *phone_util_ = PhoneNumberUtil::GetInstance();
+    std::string str;
+    phone_util_->Format(phoneNumber, phoneNumberFormat, &str);
+
+    ERL_NIF_TERM ret;
+    unsigned char *number = enif_make_new_binary(env, str.size(), &ret);
+    std::copy(str.begin(), str.end(), number);
+    
+    return ret;
+}
+*/
+static ERL_NIF_TERM FormatOutOfCountryCallingNumber_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    ErlNifPhoneNumber nifPhoneNumber;
+    if (!enif_inspect_phonenumber(env, argv[0], &nifPhoneNumber)){
+        return enif_make_badarg(env);
+    }
+
+    PhoneNumber phoneNumber;
+    CreatePhoneNumberFromNif(&nifPhoneNumber, &phoneNumber);
+
+    ErlNifBinary bin;
+    if (!enif_inspect_iolist_as_binary(env, argv[1], &bin)){
+        return enif_make_badarg(env);
+    }
+
+    PhoneNumberUtil *phone_util_ = PhoneNumberUtil::GetInstance();
+    std::string region_code( (char*) bin.data, bin.size);
+    std::string str;
+    phone_util_->FormatOutOfCountryCallingNumber(phoneNumber, region_code, &str);
+
+    ERL_NIF_TERM ret;
+    unsigned char *number = enif_make_new_binary(env, str.size(), &ret);
+    std::copy(str.begin(), str.end(), number);
+    
+    return ret;
+}
+
+static ERL_NIF_TERM FormatNationalNumberWithCarrierCode_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    ErlNifPhoneNumber nifPhoneNumber;
+    if (!enif_inspect_phonenumber(env, argv[0], &nifPhoneNumber)){
+        return enif_make_badarg(env);
+    }
+
+    PhoneNumber phoneNumber;
+    CreatePhoneNumberFromNif(&nifPhoneNumber, &phoneNumber);
+
+    ErlNifBinary bin;
+    if (!enif_inspect_iolist_as_binary(env, argv[1], &bin)){
+        return enif_make_badarg(env);
+    }
+
+    PhoneNumberUtil *phone_util_ = PhoneNumberUtil::GetInstance();
+    std::string carrier_code( (char*) bin.data, bin.size);
+    std::string str;
+    phone_util_->FormatNationalNumberWithCarrierCode(phoneNumber, carrier_code, &str);
+
+    ERL_NIF_TERM ret;
+    unsigned char *number = enif_make_new_binary(env, str.size(), &ret);
+    std::copy(str.begin(), str.end(), number);
+    
+    return ret;
+}
+
+static ERL_NIF_TERM FormatInOriginalFormat_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    ErlNifPhoneNumber nifPhoneNumber;
+    if (!enif_inspect_phonenumber(env, argv[0], &nifPhoneNumber)){
+        return enif_make_badarg(env);
+    }
+
+    PhoneNumber phoneNumber;
+    CreatePhoneNumberFromNif(&nifPhoneNumber, &phoneNumber);
+
+    ErlNifBinary bin;
+    if (!enif_inspect_iolist_as_binary(env, argv[1], &bin)){
+        return enif_make_badarg(env);
+    }
+
+    PhoneNumberUtil *phone_util_ = PhoneNumberUtil::GetInstance();
+    std::string region_code( (char*) bin.data, bin.size);
+    std::string str;
+    phone_util_->FormatInOriginalFormat(phoneNumber, region_code, &str);
+
+    ERL_NIF_TERM ret;
+    unsigned char *number = enif_make_new_binary(env, str.size(), &ret);
+    std::copy(str.begin(), str.end(), number);
+    
+    return ret;
+}
 
 //TEST
 static ERL_NIF_TERM hello(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
@@ -335,6 +443,10 @@ static ErlNifFunc nif_funcs[] = {
     {"get_national_significant_number", 1, GetNationalSignificantNumber_nif},
     {"get_length_of_geograpical_area_code", 1, GetLengthOfGeographicalAreaCode_nif},
     {"format", 2, Format_nif},
+    //{"format_by_pattern", 3, FormatByPattern_nif},
+    {"format_national_number_with_carrier_code", 2, FormatNationalNumberWithCarrierCode_nif},
+    {"format_out_of_country_calling_number", 2, FormatOutOfCountryCallingNumber_nif},
+    {"format_in_original_format", 2, FormatInOriginalFormat_nif},
 
     {"hello", 1, hello}
 };
