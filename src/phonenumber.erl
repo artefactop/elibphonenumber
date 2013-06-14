@@ -47,7 +47,7 @@ new() ->
         extension = <<"">>,
         raw_input = <<"">>,
         preferred_domestic_carrier_code = <<"">>,
-        country_code_source = 0
+        country_code_source = 1
     }.
 
 % -spec has_country_code(PhoneNumber::phonenumber()) -> boolean().
