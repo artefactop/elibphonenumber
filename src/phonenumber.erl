@@ -4,18 +4,18 @@
 
  -export([
     new/0,
-%   has_country_code/1,
-%   get_country_code/1,
+    has_country_code/1,
+    get_country_code/1,
     set_country_code/2,
-%   clear_country_code/1,
-%   has_national_number/1,
-%   get_national_number/1,
+    clear_country_code/1,
+    has_national_number/1,
+    get_national_number/1,
     set_national_number/2,
-%   clear_national_number/1,
-%   has_extension/1,
-   get_extension/1,
-   set_extension/2,
-%   clear_extension/1,
+    clear_national_number/1,
+    has_extension/1,
+    get_extension/1,
+    set_extension/2,
+    clear_extension/1,
     set_italian_leading_zero/2,
 %   is_italian_leading_zero/1,
 %   clear_italian_leading_zero/1,
@@ -50,8 +50,19 @@ new() ->
         country_code_source = 1
     }.
 
-% -spec has_country_code(PhoneNumber::phonenumber()) -> boolean().
-% -spec get_country_code(PhoneNumber::phonenumber()) -> non_neg_integer().
+%% country_code
+
+-spec has_country_code(PhoneNumber::phonenumber()) -> boolean().
+
+has_country_code(#phonenumber{country_code=CC}) when CC == 0 ->
+    false;
+has_country_code(#phonenumber{}) ->
+    true.
+
+-spec get_country_code(PhoneNumber::phonenumber()) -> non_neg_integer().
+
+get_country_code(#phonenumber{country_code=CC}) ->
+    CC.
 
 -spec set_country_code(CountryCode::non_neg_integer(), PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
@@ -59,34 +70,59 @@ set_country_code(_CountryCode, #phonenumber{}=PhoneNumber) when is_integer(_Coun
     PhoneNumber#phonenumber{country_code = _CountryCode};
 set_country_code(_CountryCode, #phonenumber{}=PhoneNumber) ->
     PhoneNumber.
-    
-% -spec clear_country_code(PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
+-spec clear_country_code(PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
-% -spec has_national_number(PhoneNumber::phonenumber()) -> boolean().
-% -spec get_national_number(PhoneNumber::phonenumber()) -> non_neg_integer().
+clear_country_code(#phonenumber{}=PhoneNumber) -> 
+    PhoneNumber#phonenumber{country_code = 0}.
+
+%% national_number
+
+-spec has_national_number(PhoneNumber::phonenumber()) -> boolean().
+
+has_national_number(#phonenumber{national_number=NN}) when NN == 0 ->
+    false;
+has_national_number(#phonenumber{}) ->
+    true.
+
+-spec get_national_number(PhoneNumber::phonenumber()) -> non_neg_integer().
+
+get_national_number(#phonenumber{national_number=NN}) ->
+    NN.
 
 -spec set_national_number(NationalNumber::non_neg_integer(), PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
 set_national_number(_NationalNumber, #phonenumber{}=PhoneNumber) ->
     PhoneNumber#phonenumber{national_number = _NationalNumber}.
 
-% -spec clear_national_number(PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
+-spec clear_national_number(PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
+clear_national_number(#phonenumber{}=PhoneNumber) -> 
+    PhoneNumber#phonenumber{national_number = 0}.
 
-% -spec has_extension(PhoneNumber::phonenumber()) -> boolean().
+%% extension
+
+-spec has_extension(PhoneNumber::phonenumber()) -> boolean().
+
+has_extension(#phonenumber{extension=Ex}) when Ex == <<"">> ->
+    false;
+has_extension(#phonenumber{}) ->
+    true.
+
 -spec get_extension(PhoneNumber::phonenumber()) -> binary().
 
-get_extension(PhoneNumber) ->
+get_extension(#phonenumber{}=PhoneNumber) ->
     PhoneNumber#phonenumber.extension.
 
 -spec set_extension(Extension::binary(), PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
-set_extension(_Extension, PhoneNumber) ->
+set_extension(_Extension, #phonenumber{}=PhoneNumber) ->
     PhoneNumber#phonenumber{extension = _Extension}.
 
-% -spec clear_extension(PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
+-spec clear_extension(PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
+clear_extension(#phonenumber{}=PhoneNumber) ->
+    PhoneNumber#phonenumber{extension = <<"">>}.
 
 % -spec has_italian_leading_zero(PhoneNumber::phonenumber()) -> boolean().
 % -spec is_italian_leading_zero(PhoneNumber::phonenumber()) -> boolean().
