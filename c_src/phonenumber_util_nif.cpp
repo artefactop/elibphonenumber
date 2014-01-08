@@ -9,7 +9,7 @@
 using namespace std;
 using namespace i18n::phonenumbers;
 
-// gcc -fPIC -shared -o libphonenumber_util_nif.so  libphonenumber_util_nif.cpp -I /usr/lib/erlang/erts-5.9.2/include/ -I /usr/include/phonenumbers/ -I /usr/include/ -l phonenumber -L /usr/lib/ -DI18N_PHONENUMBERS_NO_THREAD_SAFETY 
+// gcc -fPIC -shared -o phonenumber_util_nif.so  phonenumber_util_nif.cpp -I /usr/lib/erlang/erts-5.9.2/include/ -I /usr/include/phonenumbers/ -I /usr/include/ -l phonenumber -L /usr/lib/ -DI18N_PHONENUMBERS_NO_THREAD_SAFETY 
 
 typedef struct {
     unsigned long long national_number;
@@ -823,4 +823,4 @@ static ErlNifFunc nif_funcs[] = {
 
 
 
-ERL_NIF_INIT(libphonenumber_util, nif_funcs, NULL, NULL, NULL, NULL)
+ERL_NIF_INIT(phonenumber_util, nif_funcs, NULL, NULL, NULL, NULL)

@@ -7,6 +7,5 @@
                   kernel,
                   stdlib
                  ]},
-  {mod, { libphonenumber_app, []}},
   {env, []}
  ]}.

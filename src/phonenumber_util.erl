@@ -1,4 +1,4 @@
--module(libphonenumber_util).
+-module(phonenumber_util).
 -export([
     hello/1,
     get_supported_regions/0,
