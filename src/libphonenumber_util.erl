@@ -89,15 +89,29 @@ get_region_codes_for_country_calling_code(_CountryCallingCode) ->
 
 -spec is_alpha_number(Number::binary()) -> boolean().
 
+%% @doc Returns true if the number is a valid vanity (alpha) number such as 800
+%% MICROSOFT. A valid vanity number will start with at least 3 digits and will
+%% have three or more alpha characters. This does not do region-specific
+%% checks - to work out if this number is actually valid for a region, it
+%% should be parsed and methods such as IsPossibleNumberWithReason or
+%% IsValidNumber should be used.
+
 is_alpha_number(_Number) ->
     exit(nif_library_not_loaded).
 
 -spec convert_alpha_characters_in_number(Number::binary()) -> binary().
 
+%% @doc Converts all alpha characters in a number to their respective digits on
+%% a keypad, but retains existing formatting.
+
 convert_alpha_characters_in_number(_Number) ->
     exit(nif_library_not_loaded).
 
 -spec normalize_digits_only(Number::binary()) -> binary().
+
+%% @doc Normalizes a string of characters representing a phone number. This
+%% converts wide-ascii and arabic-indic numerals to European numerals, and
+%% strips punctuation and alpha characters.
 
 normalize_digits_only(_Number) ->
     exit(nif_library_not_loaded).
@@ -108,6 +122,7 @@ normalize_digits_only(_Number) ->
 
 %% @doc Gets the national significant number of a phone number. Note a national
 %% significant number doesn't contain a national prefix or any formatting.
+
 get_national_significant_number(_PhoneNumber) ->
     exit(nif_library_not_loaded).
 
@@ -122,6 +137,13 @@ get_length_of_geograpical_area_code(_PhoneNumber) ->
     PhoneNumber::phonenumber(), 
     PhoneNumberFormat::phonenumber_format()
     ) -> FormattedNumber::binary().
+
+%% @doc Formats a phone number in the specified format using default rules. Note
+%% that this does not promise to produce a phone number that the user can
+%% dial from where they are - although we do format in either NATIONAL or
+%% INTERNATIONAL format depending on what the client asks for, we do not
+%% currently support a more abbreviated format, such as for users in the
+%% same area who could potentially dial the number without area code.
 
 format(_PhoneNumber, _PhoneNumberFormat) ->
     exit(nif_library_not_loaded).
@@ -213,12 +235,18 @@ is_valid_number_for_region(_PhoneNumber, _Region) ->
     PhoneNumber::phonenumber()
     ) -> RegionCode::binary().
 
+%% @doc Returns the region where a phone number is from. This could be used for
+%% geo-coding at the region level.
+
 get_region_code_for_number(_PhoneNumber) ->
     exit(nif_library_not_loaded).
 
 -spec get_country_code_for_region(
     RegionCode::binary()
     ) -> CountryCode::non_neg_integer().
+
+%% @doc Returns the country calling code for a specific region. For example,
+%% this would be 1 for the United States, and 64 for New Zealand.
 
 get_country_code_for_region(_RegionCode) ->
     exit(nif_library_not_loaded).
@@ -291,13 +319,13 @@ is_possible_number(_PhoneNumber) ->
 
 %% @doc Checks whether a phone number is a possible number given a number in the
 %% form of a string, and the country where the number could be dialed from.
-%% It provides a more lenient check than IsValidNumber(). See
-%% IsPossibleNumber(const PhoneNumber& number) for details.
-%%
+%% It provides a more lenient check than is_valid_number/1. 
+%% See is_possible_number/1 for details.
+%% 
 %% This method first parses the number, then invokes
-%% IsPossibleNumber(const PhoneNumber& number) with the resultant PhoneNumber
+%% is_possible_number with the resultant PhoneNumber
 %% object.
-%%
+%% 
 %% region_dialing_from represents the region that we are expecting the number
 %% to be dialed from. Note this is different from the region where the number
 %% belongs. For example, the number +1 650 253 0000 is a number that belongs
@@ -307,6 +335,7 @@ is_possible_number(_PhoneNumber) ->
 %% 650 253 0000, it could only be dialed from within the US, and when written
 %% as 253 0000, it could only be dialed from within a smaller area in the US
 %% (Mountain View, CA, to be more specific).
+%% @see is_possible_number. 
 
 is_possible_number_for_string(_Number, _RegionDialingFrom) ->
     exit(nif_library_not_loaded).
@@ -351,6 +380,11 @@ parse(_NumberToParse, _DefaultRegion) ->
     NumberToParse::binary(),
     DefaultRegion::binary()
     ) -> PhoneNumber::phonenumber() | {error, term()}.
+
+%% @doc Parses a string and returns it in proto buffer format. This method differs
+%% from parse/2 in that it always populates the raw_input field of the
+%% protocol buffer with number_to_parse as well as the country_code_source
+%% field.
 
 parse_and_keep_raw_input(_NumberToParse, _DefaultRegion) ->
     exit(nif_library_not_loaded).

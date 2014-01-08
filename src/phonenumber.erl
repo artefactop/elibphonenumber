@@ -55,9 +55,11 @@ new() ->
 
 -spec set_country_code(CountryCode::non_neg_integer(), PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
+set_country_code(_CountryCode, #phonenumber{}=PhoneNumber) when is_integer(_CountryCode)  ->
+    PhoneNumber#phonenumber{country_code = _CountryCode};
 set_country_code(_CountryCode, #phonenumber{}=PhoneNumber) ->
-    PhoneNumber#phonenumber{country_code = _CountryCode}.
-
+    PhoneNumber.
+    
 % -spec clear_country_code(PhoneNumber::phonenumber()) -> NewPhoneNumber::phonenumber().
 
 
