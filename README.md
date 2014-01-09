@@ -3,7 +3,9 @@ elibphonenumber
 
 Erlang port for use libphonenumber from erlang (in development)
 
+## Documentation
 
+[doc](http://artefactop.github.io/elibphonenumber/ "documentation")
 
 ## Compile and test
 You need install libphonenumber-dev for compile and libphonenumber for run
