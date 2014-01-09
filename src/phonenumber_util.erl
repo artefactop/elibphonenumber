@@ -5,7 +5,7 @@
     is_alpha_number/1,
     convert_alpha_characters_in_number/1,
     normalize_digits_only/1,
-    %normalize_diallable_chars_only/1,
+    normalize_diallable_chars_only/1,
     get_national_significant_number/1,
     get_length_of_geograpical_area_code/1,
     %get_length_of_national_destination_code/1,
@@ -112,6 +112,15 @@ convert_alpha_characters_in_number(_Number) ->
 %% strips punctuation and alpha characters.
 
 normalize_digits_only(_Number) ->
+    exit(nif_library_not_loaded).
+
+-spec normalize_diallable_chars_only(Number::binary()) -> binary().
+
+%% @doc Normalizes a string of characters representing a phone number. This strips
+%% all characters which are not diallable on a mobile phone keypad (including
+%% all non-ASCII digits).
+
+normalize_diallable_chars_only(_Number) ->
     exit(nif_library_not_loaded).
 
 -spec get_national_significant_number(

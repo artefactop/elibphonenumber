@@ -370,6 +370,25 @@ static ERL_NIF_TERM NormalizeDigitsOnly_nif(ErlNifEnv* env, int argc, const ERL_
     return ret;
 }
 
+static ERL_NIF_TERM NormalizeDiallableCharsOnly_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    ErlNifBinary bin;
+    if (!enif_inspect_iolist_as_binary(env, argv[0], &bin)){
+        return enif_make_badarg(env);
+    }
+
+    PhoneNumberUtil *phone_util_ = PhoneNumberUtil::GetInstance();
+
+    std::string str( (char*) bin.data, bin.size);
+    phone_util_->NormalizeDiallableCharsOnly(&str);
+
+    ERL_NIF_TERM ret;
+    unsigned char *number = enif_make_new_binary(env, str.size(), &ret);
+    std::copy(str.begin(), str.end(), number);
+    
+    return ret;
+}
+
 static ERL_NIF_TERM GetNationalSignificantNumber_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
 {
     ErlNifPhoneNumber nifPhoneNumber;
@@ -1065,6 +1084,7 @@ static ErlNifFunc nif_funcs[] = {
     {"is_alpha_number", 1, IsAlphaNumber_nif},
     {"convert_alpha_characters_in_number", 1, ConvertAlphaCharactersInNumber_nif},
     {"normalize_digits_only", 1, NormalizeDigitsOnly_nif},
+    {"normalize_diallable_chars_only", 1, NormalizeDiallableCharsOnly_nif},
     {"get_national_significant_number", 1, GetNationalSignificantNumber_nif},
     {"get_length_of_geograpical_area_code", 1, GetLengthOfGeographicalAreaCode_nif},
     {"format", 2, Format_nif},
