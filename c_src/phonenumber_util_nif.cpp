@@ -1109,7 +1109,7 @@ static ErlNifFunc nif_funcs[] = {
     {"is_possible_number", 1, IsPossibleNumber_nif},
     {"is_possible_number_for_string", 2, IsPossibleNumberForString_nif},
     {"get_example_number", 1, GetExampleNumber_nif},
-    {"get_example_number_for_type", 1, GetExampleNumberForType_nif},
+    {"get_example_number_for_type", 2, GetExampleNumberForType_nif},
     {"get_example_number_for_non_geo_entity", 1, GetExampleNumberForNonGeoEntity_nif},
     {"parse", 2, Parse_nif},
     {"parse_and_keep_raw_input", 2, ParseAndKeepRawInput_nif},
