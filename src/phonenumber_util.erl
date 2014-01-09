@@ -128,7 +128,42 @@ get_national_significant_number(_PhoneNumber) ->
     PhoneNumber::phonenumber()
     ) -> non_neg_integer().
 
-%% @doc TODO
+%% @doc  Gets the length of the geographical area code from the PhoneNumber object
+%% passed in, so that clients could use it to split a national significant
+%% number into geographical area code and subscriber number. It works in such
+%% a way that the resultant subscriber number should be diallable, at least on
+%% some devices. An example of how this could be used:
+%%
+%% ```
+%% PhoneNumber = phonenumber_util.parse(<<"16502530000">>,<<"US">>),
+%% NationalSignificatNumber = phonenumber_util.get_national_significant_number(PhoneNumber),
+%% AreaCodeLength = phonenumber_util.get_lenth_of_geographical_area_code(PhoneNumber),
+%% {AreaCode, SubscriberNumber} = if 
+%%     AreaCodeLength > 0 ->
+%%          {binary:part(NationalSignificatNumber, AreaCodeLength),
+%%          SubscriberNumber = binary:part(NationalSignificatNumber, AreaCodeLength, byte_size(NationalSignificatNumber))};
+%%     true ->
+%%          {<<>>, NationalSignificatNumber}
+%% end.
+%% '''
+%%
+%% N.B.: area code is a very ambiguous concept, so the authors generally
+%% recommend against using it for most purposes, but recommend using the
+%% more general national_number instead. Read the following carefully before
+%% deciding to use this method:
+%%
+%%  - geographical area codes change over time, and this method honors those
+%%    changes; therefore, it doesn't guarantee the stability of the result it
+%%    produces.
+%%
+%%  - subscriber numbers may not be diallable from all devices (notably mobile
+%%    devices, which typically requires the full national_number to be dialled
+%%    in most regions).
+%%
+%%  - most non-geographical numbers have no area codes, including numbers
+%%    from non-geographical entities.
+%%
+%%  - some geographical numbers have no area codes.
 
 get_length_of_geograpical_area_code(_PhoneNumber) ->
     exit(nif_library_not_loaded).

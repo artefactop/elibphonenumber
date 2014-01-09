@@ -1,0 +1,3 @@
+{application,libphonenumber}.
+{packages,[]}.
+{modules,[phonenumber,phonenumber_util]}.
