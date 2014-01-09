@@ -1,0 +1,6 @@
+                        -*- html -*-
+
+
+@author Jose Luis Navarro [https://github.com/artefactop]
+@title Welcome to the elibphonenumber library
+@doc `elibphonenumber' is a wrapper port for libphonenumber [https://github.com/artefactop/elibphonenumber]
