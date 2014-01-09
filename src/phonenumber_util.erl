@@ -422,7 +422,7 @@ get_ndd_prefix_for_region(_RegionCode, _StripNonDigits) ->
     PhoneNumber::phonenumber()
     ) -> ValidationResult::validation_result().
 
-%% @doc TODO Checks whether a phone number is a possible number. It provides a more
+%% @doc Checks whether a phone number is a possible number. It provides a more
 %% lenient check than IsValidNumber() in the following sense:
 %%   1. It only checks the length of phone numbers. In particular, it doesn't
 %%      check starting digits of the number.
@@ -447,7 +447,7 @@ is_possible_number_with_reason(_PhoneNumber) ->
     PhoneNumber::phonenumber()
     ) -> boolean().
 
-%% @doc TODO Convenience wrapper around IsPossibleNumberWithReason. Instead of returning
+%% @doc Convenience wrapper around IsPossibleNumberWithReason. Instead of returning
 %% the reason for failure, this method returns a boolean value.
 
 is_possible_number(_PhoneNumber) ->
@@ -458,7 +458,7 @@ is_possible_number(_PhoneNumber) ->
     RegionDialingFrom::binary()
     ) -> boolean().
 
-%% @doc TODO Checks whether a phone number is a possible number given a number in the
+%% @doc Checks whether a phone number is a possible number given a number in the
 %% form of a string, and the country where the number could be dialed from.
 %% It provides a more lenient check than is_valid_number/1. 
 %% See is_possible_number/1 for details.
@@ -485,7 +485,7 @@ is_possible_number_for_string(_Number, _RegionDialingFrom) ->
     RegionCode::binary()
     ) -> ValidPhoneNumber::phonenumber() | {error, unknown_region}.
 
-%% @doc TODO Gets a valid fixed-line number for the specified region. Returns {error, unknown_region} if
+%% @doc Gets a valid fixed-line number for the specified region. Returns {error, unknown_region} if
 %% the region was unknown, or the region 001 is passed in. For 001
 %% (representing non-geographical numbers), call
 %% GetExampleNumberForNonGeoEntity instead.
@@ -498,7 +498,10 @@ get_example_number(_RegionCode) ->
     PhoneNumberType::phonenumber_type()
     ) -> ValidPhoneNumber::phonenumber() | {error, unknown_region}.
 
-%% @doc TODO
+%% @doc Gets a valid number of the specified type for the specified region.
+%% Returns false if the region was unknown or 001, or if no example number of
+%% that type could be found. For 001 (representing non-geographical numbers),
+%% call GetExampleNumberForNonGeoEntity instead.
 
 get_example_number_for_type(_RegionCode, _PhoneNumberType) ->
     exit(nif_library_not_loaded).
@@ -507,7 +510,10 @@ get_example_number_for_type(_RegionCode, _PhoneNumberType) ->
     CountryCallingCode::binary()
     ) -> ValidPhoneNumber::phonenumber() | {error, unknown_code}.
 
-%% @doc TODO
+%% @doc Gets a valid number for the specified country calling code for a
+%% non-geographical entity. Returns false if the metadata does not contain
+%% such information, or the country calling code passed in does not belong to
+%% a non-geographical entity.
 
 get_example_number_for_non_geo_entity(_CountryCallingCode) ->
     exit(nif_library_not_loaded).
@@ -554,7 +560,19 @@ parse_and_keep_raw_input(_NumberToParse, _DefaultRegion) ->
     SecondNumber::phonenumber()
     ) -> match_type().
 
-%% @doc TODO
+%% @doc Takes two phone numbers and compares them for equality.
+%%
+%% Returns EXACT_MATCH if the country calling code, NSN, presence of a leading
+%% zero for Italian numbers and any extension present are the same.
+%% Returns NSN_MATCH if either or both has no country calling code specified,
+%% and the NSNs and extensions are the same.
+%% Returns SHORT_NSN_MATCH if either or both has no country calling code
+%% specified, or the country calling code specified is the same, and one NSN
+%% could be a shorter version of the other number. This includes the case
+%% where one has an extension specified, and the other does not.
+%% Returns NO_MATCH otherwise.
+%% For example, the numbers +1 345 657 1234 and 657 1234 are a
+%% SHORT_NSN_MATCH. The numbers +1 345 657 1234 and 345 657 are a NO_MATCH.
 
 is_number_match(_FirstNumber, _SecondNumber) ->
     exit(nif_library_not_loaded).
@@ -564,7 +582,11 @@ is_number_match(_FirstNumber, _SecondNumber) ->
     SecondNumber::binary()
     ) -> match_type().
 
-%% @doc TODO
+%% @doc Takes two phone numbers as strings and compares them for equality. This
+%% is a convenience wrapper for IsNumberMatch(PhoneNumber firstNumber,
+%% PhoneNumber secondNumber). No default region is known.
+%% Returns INVALID_NUMBER if either number cannot be parsed into a phone
+%% number.
 
 is_number_match_with_two_strings(_FirstNumber, _SecondNumber) ->
     exit(nif_library_not_loaded).
@@ -574,7 +596,11 @@ is_number_match_with_two_strings(_FirstNumber, _SecondNumber) ->
     SecondNumber::binary()
     ) -> match_type().
 
-%% @doc TODO
+%% @doc Takes two phone numbers and compares them for equality. This is a
+%% convenience wrapper for IsNumberMatch(PhoneNumber firstNumber,
+%% PhoneNumber secondNumber). No default region is known.
+%% Returns INVALID_NUMBER if second_number cannot be parsed into a phone
+%% number.
 
 is_number_match_with_one_string(_FirstNumber, _SecondNumber) ->
     exit(nif_library_not_loaded).
