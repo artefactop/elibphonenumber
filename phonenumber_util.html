@@ -30,9 +30,10 @@ object passed in.</td></tr>
 <tr><td valign="top"><a href="#format_out_of_country_calling_number-2">format_out_of_country_calling_number/2</a></td><td>Formats a phone number for out-of-country dialing purposes.</td></tr>
 <tr><td valign="top"><a href="#format_out_of_country_keeping_alpha_chars-2">format_out_of_country_keeping_alpha_chars/2</a></td><td>Formats a phone number for out-of-country dialing purposes.</td></tr>
 <tr><td valign="top"><a href="#get_country_code_for_region-1">get_country_code_for_region/1</a></td><td>Returns the country calling code for a specific region.</td></tr>
-<tr><td valign="top"><a href="#get_example_number-1">get_example_number/1</a></td><td>TODO Gets a valid fixed-line number for the specified region.</td></tr>
-<tr><td valign="top"><a href="#get_example_number_for_non_geo_entity-1">get_example_number_for_non_geo_entity/1</a></td><td>TODO.</td></tr>
-<tr><td valign="top"><a href="#get_example_number_for_type-2">get_example_number_for_type/2</a></td><td>TODO.</td></tr>
+<tr><td valign="top"><a href="#get_example_number-1">get_example_number/1</a></td><td>Gets a valid fixed-line number for the specified region.</td></tr>
+<tr><td valign="top"><a href="#get_example_number_for_non_geo_entity-1">get_example_number_for_non_geo_entity/1</a></td><td>Gets a valid number for the specified country calling code for a
+  non-geographical entity.</td></tr>
+<tr><td valign="top"><a href="#get_example_number_for_type-2">get_example_number_for_type/2</a></td><td>Gets a valid number of the specified type for the specified region.</td></tr>
 <tr><td valign="top"><a href="#get_length_of_geograpical_area_code-1">get_length_of_geograpical_area_code/1</a></td><td> Gets the length of the geographical area code from the PhoneNumber object  
 passed in, so that clients could use it to split a national significant  
 number into geographical area code and subscriber number.</td></tr>
@@ -50,13 +51,13 @@ number into geographical area code and subscriber number.</td></tr>
   MICROSOFT.</td></tr>
 <tr><td valign="top"><a href="#is_nanpa_country-1">is_nanpa_country/1</a></td><td>Checks if this is a region under the North American Numbering Plan
   Administration (NANPA).</td></tr>
-<tr><td valign="top"><a href="#is_number_match-2">is_number_match/2</a></td><td>TODO.</td></tr>
-<tr><td valign="top"><a href="#is_number_match_with_one_string-2">is_number_match_with_one_string/2</a></td><td>TODO.</td></tr>
-<tr><td valign="top"><a href="#is_number_match_with_two_strings-2">is_number_match_with_two_strings/2</a></td><td>TODO.</td></tr>
-<tr><td valign="top"><a href="#is_possible_number-1">is_possible_number/1</a></td><td>TODO Convenience wrapper around IsPossibleNumberWithReason.</td></tr>
-<tr><td valign="top"><a href="#is_possible_number_for_string-2">is_possible_number_for_string/2</a></td><td>TODO Checks whether a phone number is a possible number given a number in the  
+<tr><td valign="top"><a href="#is_number_match-2">is_number_match/2</a></td><td>Takes two phone numbers and compares them for equality.</td></tr>
+<tr><td valign="top"><a href="#is_number_match_with_one_string-2">is_number_match_with_one_string/2</a></td><td>Takes two phone numbers and compares them for equality.</td></tr>
+<tr><td valign="top"><a href="#is_number_match_with_two_strings-2">is_number_match_with_two_strings/2</a></td><td>Takes two phone numbers as strings and compares them for equality.</td></tr>
+<tr><td valign="top"><a href="#is_possible_number-1">is_possible_number/1</a></td><td>Convenience wrapper around IsPossibleNumberWithReason.</td></tr>
+<tr><td valign="top"><a href="#is_possible_number_for_string-2">is_possible_number_for_string/2</a></td><td>Checks whether a phone number is a possible number given a number in the  
 form of a string, and the country where the number could be dialed from.</td></tr>
-<tr><td valign="top"><a href="#is_possible_number_with_reason-1">is_possible_number_with_reason/1</a></td><td>TODO Checks whether a phone number is a possible number.</td></tr>
+<tr><td valign="top"><a href="#is_possible_number_with_reason-1">is_possible_number_with_reason/1</a></td><td>Checks whether a phone number is a possible number.</td></tr>
 <tr><td valign="top"><a href="#is_valid_number-1">is_valid_number/1</a></td><td>Tests whether a phone number matches a valid pattern.</td></tr>
 <tr><td valign="top"><a href="#is_valid_number_for_region-2">is_valid_number_for_region/2</a></td><td>Tests whether a phone number is valid for a certain region.</td></tr>
 <tr><td valign="top"><a href="#normalize_digits_only-1">normalize_digits_only/1</a></td><td>Normalizes a string of characters representing a phone number.</td></tr>
@@ -172,7 +173,7 @@ representation. Grouping information, as specified by characters such as
 <h3 class="function"><a name="get_example_number-1">get_example_number/1</a></h3>
 <div class="spec">
 <p><tt>get_example_number(RegionCode::binary()) -&gt; ValidPhoneNumber::<a href="#type-phonenumber">phonenumber()</a> | {error, unknown_region}</tt><br></p>
-</div><p>TODO Gets a valid fixed-line number for the specified region. Returns {error, unknown_region} if
+</div><p>Gets a valid fixed-line number for the specified region. Returns {error, unknown_region} if
   the region was unknown, or the region 001 is passed in. For 001
   (representing non-geographical numbers), call
   GetExampleNumberForNonGeoEntity instead.</p>
@@ -180,12 +181,18 @@ representation. Grouping information, as specified by characters such as
 <h3 class="function"><a name="get_example_number_for_non_geo_entity-1">get_example_number_for_non_geo_entity/1</a></h3>
 <div class="spec">
 <p><tt>get_example_number_for_non_geo_entity(CountryCallingCode::binary()) -&gt; ValidPhoneNumber::<a href="#type-phonenumber">phonenumber()</a> | {error, unknown_code}</tt><br></p>
-</div><p>TODO</p>
+</div><p>Gets a valid number for the specified country calling code for a
+  non-geographical entity. Returns false if the metadata does not contain
+  such information, or the country calling code passed in does not belong to
+  a non-geographical entity.</p>
 
 <h3 class="function"><a name="get_example_number_for_type-2">get_example_number_for_type/2</a></h3>
 <div class="spec">
 <p><tt>get_example_number_for_type(RegionCode::binary(), PhoneNumberType::<a href="#type-phonenumber_type">phonenumber_type()</a>) -&gt; ValidPhoneNumber::<a href="#type-phonenumber">phonenumber()</a> | {error, unknown_region}</tt><br></p>
-</div><p>TODO</p>
+</div><p>Gets a valid number of the specified type for the specified region.
+  Returns false if the region was unknown or 001, or if no example number of
+  that type could be found. For 001 (representing non-geographical numbers),
+  call GetExampleNumberForNonGeoEntity instead.</p>
 
 <h3 class="function"><a name="get_length_of_geograpical_area_code-1">get_length_of_geograpical_area_code/1</a></h3>
 <div class="spec">
@@ -301,28 +308,48 @@ from non-geographical entities.</p>
 <h3 class="function"><a name="is_number_match-2">is_number_match/2</a></h3>
 <div class="spec">
 <p><tt>is_number_match(FirstNumber::<a href="#type-phonenumber">phonenumber()</a>, SecondNumber::<a href="#type-phonenumber">phonenumber()</a>) -&gt; <a href="#type-match_type">match_type()</a></tt><br></p>
-</div><p>TODO</p>
+</div><p><p>Takes two phone numbers and compares them for equality.</p>
+ 
+  Returns EXACT_MATCH if the country calling code, NSN, presence of a leading
+  zero for Italian numbers and any extension present are the same.
+  Returns NSN_MATCH if either or both has no country calling code specified,
+  and the NSNs and extensions are the same.
+  Returns SHORT_NSN_MATCH if either or both has no country calling code
+  specified, or the country calling code specified is the same, and one NSN
+  could be a shorter version of the other number. This includes the case
+  where one has an extension specified, and the other does not.
+  Returns NO_MATCH otherwise.
+  For example, the numbers +1 345 657 1234 and 657 1234 are a
+  SHORT_NSN_MATCH. The numbers +1 345 657 1234 and 345 657 are a NO_MATCH.</p>
 
 <h3 class="function"><a name="is_number_match_with_one_string-2">is_number_match_with_one_string/2</a></h3>
 <div class="spec">
 <p><tt>is_number_match_with_one_string(FirstNumber::<a href="#type-phonenumber">phonenumber()</a>, SecondNumber::binary()) -&gt; <a href="#type-match_type">match_type()</a></tt><br></p>
-</div><p>TODO</p>
+</div><p>Takes two phone numbers and compares them for equality. This is a
+  convenience wrapper for IsNumberMatch(PhoneNumber firstNumber,
+  PhoneNumber secondNumber). No default region is known.
+  Returns INVALID_NUMBER if second_number cannot be parsed into a phone
+  number.</p>
 
 <h3 class="function"><a name="is_number_match_with_two_strings-2">is_number_match_with_two_strings/2</a></h3>
 <div class="spec">
 <p><tt>is_number_match_with_two_strings(FirstNumber::binary(), SecondNumber::binary()) -&gt; <a href="#type-match_type">match_type()</a></tt><br></p>
-</div><p>TODO</p>
+</div><p>Takes two phone numbers as strings and compares them for equality. This
+  is a convenience wrapper for IsNumberMatch(PhoneNumber firstNumber,
+  PhoneNumber secondNumber). No default region is known.
+  Returns INVALID_NUMBER if either number cannot be parsed into a phone
+  number.</p>
 
 <h3 class="function"><a name="is_possible_number-1">is_possible_number/1</a></h3>
 <div class="spec">
 <p><tt>is_possible_number(PhoneNumber::<a href="#type-phonenumber">phonenumber()</a>) -&gt; boolean()</tt><br></p>
-</div><p>TODO Convenience wrapper around IsPossibleNumberWithReason. Instead of returning
+</div><p>Convenience wrapper around IsPossibleNumberWithReason. Instead of returning
   the reason for failure, this method returns a boolean value.</p>
 
 <h3 class="function"><a name="is_possible_number_for_string-2">is_possible_number_for_string/2</a></h3>
 <div class="spec">
 <p><tt>is_possible_number_for_string(Number::binary(), RegionDialingFrom::binary()) -&gt; boolean()</tt><br></p>
-</div><p><p>TODO Checks whether a phone number is a possible number given a number in the  
+</div><p><p>Checks whether a phone number is a possible number given a number in the  
 form of a string, and the country where the number could be dialed from.  
 It provides a more lenient check than is_valid_number/1.  
 See is_possible_number/1 for details.</p>
@@ -345,7 +372,7 @@ object.</p>
 <h3 class="function"><a name="is_possible_number_with_reason-1">is_possible_number_with_reason/1</a></h3>
 <div class="spec">
 <p><tt>is_possible_number_with_reason(PhoneNumber::<a href="#type-phonenumber">phonenumber()</a>) -&gt; ValidationResult::<a href="#type-validation_result">validation_result()</a></tt><br></p>
-</div><p>TODO Checks whether a phone number is a possible number. It provides a more
+</div><p>Checks whether a phone number is a possible number. It provides a more
   lenient check than IsValidNumber() in the following sense:
     1. It only checks the length of phone numbers. In particular, it doesn't
        check starting digits of the number.
@@ -431,6 +458,6 @@ IsValidNumber().</p>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<p><i>Generated by EDoc, Jan 9 2014, 13:24:29.</i></p>
+<p><i>Generated by EDoc, Jan 9 2014, 14:40:28.</i></p>
 </body>
 </html>
