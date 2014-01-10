@@ -27,5 +27,4 @@ rebar compile eunit
 TODO 
 
 - finish phonenumber_util port
-- improve phonenumber with port functions
-- load PhoneNumberMetadataForTesting for eunit test
+- test get_example* functions
