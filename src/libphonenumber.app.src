@@ -1,7 +1,7 @@
-{application, libphonenumber,
+{application, elibphonenumber,
  [
   {description, "Port driver for libphonenumber"},
-  {vsn, "1"},
+  {vsn, git},
   {registered, []},
   {applications, [
                   kernel,
