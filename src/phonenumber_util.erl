@@ -8,8 +8,8 @@
     normalize_diallable_chars_only/1,
     get_national_significant_number/1,
     get_length_of_geograpical_area_code/1,
-    %get_length_of_national_destination_code/1,
-    %get_country_mobile_token/1,
+    get_length_of_national_destination_code/1,
+    get_country_mobile_token/1,
     format/2,
     format_by_pattern/3,
     format_national_number_with_carrier_code/2,
@@ -133,6 +133,32 @@ normalize_diallable_chars_only(_Number) ->
 get_national_significant_number(_PhoneNumber) ->
     exit(nif_library_not_loaded).
 
+-spec get_length_of_national_destination_code(
+    PhoneNumber::phonenumber()
+    ) -> non_neg_integer().
+
+%% @doc Gets the length of the national destination code (NDC) from the PhoneNumber
+%% object passed in, so that clients could use it to split a national
+%% significant number into NDC and subscriber number. The NDC of a phone
+%% number is normally the first group of digit(s) right after the country
+%% calling code when the number is formatted in the international format, if
+%% there is a subscriber number part that follows.
+%% ```
+%% PhoneNumber = phonenumber_util:parse(<<"16502530000">>, <<"US">>),
+%% NationalSignificantNumber = phonenumber_util:get_national_significant_number(PhoneNumber),
+%% NationalDestinationCodeLength = phonenumber_util:get_length_of_national_destination_code(PhoneNumber),
+%% {NationalDestinationCode, SubscriberNumber} = if 
+%%     NationalDestinationCodeLength > 0 ->
+%%         {binary:part(NationalSignificantNumber, NationalDestinationCodeLength),
+%%         binary:part(NationalSignificantNumber, NationalDestinationCodeLength, byte_size(NationalSignificantNumber))};
+%%     true ->
+%%     {<<>>, NationalSignificantNumber} 
+%% end.       
+%% '''
+
+get_length_of_national_destination_code(_PhoneNumber) -> 
+    exit(nif_library_not_loaded).
+
 -spec get_length_of_geograpical_area_code(
     PhoneNumber::phonenumber()
     ) -> non_neg_integer().
@@ -145,12 +171,12 @@ get_national_significant_number(_PhoneNumber) ->
 %%
 %% ```
 %% PhoneNumber = phonenumber_util.parse(<<"16502530000">>,<<"US">>),
-%% NationalSignificatNumber = phonenumber_util.get_national_significant_number(PhoneNumber),
+%% NationalSignificantNumber = phonenumber_util.get_national_significant_number(PhoneNumber),
 %% AreaCodeLength = phonenumber_util.get_lenth_of_geographical_area_code(PhoneNumber),
 %% {AreaCode, SubscriberNumber} = if 
 %%     AreaCodeLength > 0 ->
-%%          {binary:part(NationalSignificatNumber, AreaCodeLength),
-%%          SubscriberNumber = binary:part(NationalSignificatNumber, AreaCodeLength, byte_size(NationalSignificatNumber))};
+%%          {binary:part(NationalSignificantNumber, AreaCodeLength),
+%%          binary:part(NationalSignificantNumber, AreaCodeLength, byte_size(NationalSignificantNumber))};
 %%     true ->
 %%          {<<>>, NationalSignificatNumber}
 %% end.
@@ -175,6 +201,16 @@ get_national_significant_number(_PhoneNumber) ->
 %%  - some geographical numbers have no area codes.
 
 get_length_of_geograpical_area_code(_PhoneNumber) ->
+    exit(nif_library_not_loaded).
+
+-spec get_country_mobile_token(CountryCallingCode::non_neg_integer()) -> binary().
+
+%% @doc Returns the mobile token for the provided country calling code if it has
+%% one, otherwise returns an empty string. A mobile token is a number inserted
+%% before the area code when dialing a mobile number from that country from
+%% abroad.
+
+get_country_mobile_token(_CountryCallingCode) ->
     exit(nif_library_not_loaded).
 
 -spec format(

@@ -509,6 +509,39 @@ static ERL_NIF_TERM GetLengthOfGeographicalAreaCode_nif(ErlNifEnv* env, int argc
     return enif_make_int(env, length);
 }
 
+static ERL_NIF_TERM GetLengthOfNationalDestinationCode_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    PhoneNumber phoneNumber;
+    if (!enif_inspect_phonenumber(env, argv[0], &phoneNumber)){
+        return enif_make_badarg(env);
+    }
+
+    PhoneNumberUtil *phone_util_ = PhoneNumberUtil::GetInstance();
+    int length = phone_util_->GetLengthOfNationalDestinationCode(phoneNumber);
+    
+    return enif_make_int(env, length);
+}
+
+static ERL_NIF_TERM GetCountryMobileToken_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    int code;
+    if (!enif_get_int(env, argv[0], &code)) {
+        return enif_make_badarg(env);
+    }
+
+    PhoneNumberUtil *phone_util_ = PhoneNumberUtil::GetInstance();
+
+    std::string mobile_token;
+    
+    phone_util_->GetCountryMobileToken(code, &mobile_token);
+
+    ERL_NIF_TERM ret;
+    unsigned char *token = enif_make_new_binary(env, mobile_token.size(), &ret);
+    std::copy(mobile_token.begin(), mobile_token.end(), token);
+    
+    return ret;
+}
+
 static ERL_NIF_TERM Format_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
 {
     PhoneNumber phoneNumber;
@@ -1121,6 +1154,8 @@ static ErlNifFunc nif_funcs[] = {
     {"normalize_diallable_chars_only", 1, NormalizeDiallableCharsOnly_nif},
     {"get_national_significant_number", 1, GetNationalSignificantNumber_nif},
     {"get_length_of_geograpical_area_code", 1, GetLengthOfGeographicalAreaCode_nif},
+    {"get_length_of_national_destination_code", 1, GetLengthOfNationalDestinationCode_nif},
+    {"get_country_mobile_token", 1, GetCountryMobileToken_nif},
     {"format", 2, Format_nif},
     //{"format_by_pattern", 3, FormatByPattern_nif},
     {"format_national_number_with_carrier_code", 2, FormatNationalNumberWithCarrierCode_nif},

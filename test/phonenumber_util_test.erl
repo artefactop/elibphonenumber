@@ -68,6 +68,24 @@ get_national_significant_number_test() ->
     P42 = phonenumber:set_national_number(12345678, P41),
     <<"12345678">> = phonenumber_util:get_national_significant_number(P42).
 
+get_example_test() ->
+    P1 = phonenumber:new(),
+    P11 = phonenumber:set_country_code(49, P1),
+    P12 = phonenumber:set_national_number(30123456, P11),    
+    P12 = phonenumber_util:get_example_number(<<"DE">>),
+    P12 = phonenumber_util:get_example_number_for_type(<<"DE">>, fixed_line).
+
+get_example_for_non_geo_entity() ->
+    TFN = phonenumber:new(),
+    TFN1 = phonenumber:set_country_code(800, TFN),
+    TollFreeNumber = phonenumber:set_national_number(12345678, TFN1),
+    TollFreeNumber = phonenumber_util:get_example_number_for_non_geo_entity(800),  
+
+    UPR = phonenumber:new(),
+    UPR = phonenumber:set_country_code(800, UPR),
+    UniversalPremiumRate = phonenumber:set_national_number(123456789, UPR),
+    UniversalPremiumRate = phonenumber_util:get_example_number_for_non_geo_entity(979). 
+
 get_length_of_geograpical_area_code_test() ->
     %% Google MTV, which has area code "650".
     P1 = phonenumber:new(),
@@ -144,11 +162,11 @@ get_length_of_national_destination_code_test() ->
     P22 = phonenumber:set_national_number(8002530000, P21),
     3 = phonenumber_util:get_length_of_national_destination_code(P22), 
 
-    %% Google London, which has NDC "20".
+    %% Google London.
     P3 = phonenumber:new(),
     P31 = phonenumber:set_country_code(44, P3),
     P32 = phonenumber:set_national_number(65025300001, P31),
-    2 = phonenumber_util:get_length_of_national_destination_code(P32), 
+    0 = phonenumber_util:get_length_of_national_destination_code(P32), 
 
     %% Google London, which has area code "20".
     P4 = phonenumber:new(),
@@ -194,10 +212,10 @@ get_length_of_national_destination_code_test() ->
 
     %% A number that has only one group of digits after country code when
     %% formatted in the international format.
-    PA = phonenumber:new(),
-    PA1 = phonenumber:set_country_code(367, PA),
-    PA2 = phonenumber:set_national_number(12345, PA1),
-    0 = phonenumber_util:get_length_of_national_destination_code(PA2),
+    PD = phonenumber:new(),
+    PD1 = phonenumber:set_country_code(367, PD),
+    PD2 = phonenumber:set_national_number(12345, PD1),
+    0 = phonenumber_util:get_length_of_national_destination_code(PD2),
 
     %% The same number above, but with an extension.
     PB = phonenumber:new(),

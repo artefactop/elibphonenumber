@@ -18,7 +18,7 @@
     clear_extension/1,
     set_italian_leading_zero/2,
 %   is_italian_leading_zero/1,
-%   clear_italian_leading_zero/1,
+    clear_italian_leading_zero/1,
 %   has_raw_input/1,
 %   get_raw_input/1,
     set_raw_input/2,

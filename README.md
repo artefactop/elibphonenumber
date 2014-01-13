@@ -27,4 +27,3 @@ rebar compile eunit
 TODO 
 
 - finish phonenumber_util port
-- test get_example* functions
