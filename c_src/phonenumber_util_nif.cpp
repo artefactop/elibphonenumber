@@ -1013,7 +1013,7 @@ static ERL_NIF_TERM GetExampleNumberForType_nif(ErlNifEnv* env, int argc, const 
         return enif_make_phonenumber(env, phoneNumber);
     }
 
-    return enif_make_boolean(env, "false");
+    return enif_make_boolean(env, false);
 }
 
 static ERL_NIF_TERM GetExampleNumberForNonGeoEntity_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
@@ -1032,7 +1032,7 @@ static ERL_NIF_TERM GetExampleNumberForNonGeoEntity_nif(ErlNifEnv* env, int argc
         return enif_make_phonenumber(env, phoneNumber);
     }
 
-    return enif_make_boolean(env, "false");
+    return enif_make_boolean(env, false);
 }
 
 static ERL_NIF_TERM Parse_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])

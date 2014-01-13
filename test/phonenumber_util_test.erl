@@ -75,15 +75,15 @@ get_example_test() ->
     P12 = phonenumber_util:get_example_number(<<"DE">>),
     P12 = phonenumber_util:get_example_number_for_type(<<"DE">>, fixed_line).
 
-get_example_for_non_geo_entity() ->
+get_example_for_non_geo_entity_test() ->
     TFN = phonenumber:new(),
     TFN1 = phonenumber:set_country_code(800, TFN),
     TollFreeNumber = phonenumber:set_national_number(12345678, TFN1),
     TollFreeNumber = phonenumber_util:get_example_number_for_non_geo_entity(800),  
 
     UPR = phonenumber:new(),
-    UPR = phonenumber:set_country_code(800, UPR),
-    UniversalPremiumRate = phonenumber:set_national_number(123456789, UPR),
+    UPR1 = phonenumber:set_country_code(979, UPR),
+    UniversalPremiumRate = phonenumber:set_national_number(123456789, UPR1),
     UniversalPremiumRate = phonenumber_util:get_example_number_for_non_geo_entity(979). 
 
 get_length_of_geograpical_area_code_test() ->
