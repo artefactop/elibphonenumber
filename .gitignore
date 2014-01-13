@@ -3,7 +3,6 @@
 *.so
 .eunit
 ebin
-overview.edoc
 edoc-info
 erlang.png
 index.html
