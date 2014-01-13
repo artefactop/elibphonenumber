@@ -30,6 +30,8 @@ object passed in.</td></tr>
 <tr><td valign="top"><a href="#format_out_of_country_calling_number-2">format_out_of_country_calling_number/2</a></td><td>Formats a phone number for out-of-country dialing purposes.</td></tr>
 <tr><td valign="top"><a href="#format_out_of_country_keeping_alpha_chars-2">format_out_of_country_keeping_alpha_chars/2</a></td><td>Formats a phone number for out-of-country dialing purposes.</td></tr>
 <tr><td valign="top"><a href="#get_country_code_for_region-1">get_country_code_for_region/1</a></td><td>Returns the country calling code for a specific region.</td></tr>
+<tr><td valign="top"><a href="#get_country_mobile_token-1">get_country_mobile_token/1</a></td><td>Returns the mobile token for the provided country calling code if it has
+  one, otherwise returns an empty string.</td></tr>
 <tr><td valign="top"><a href="#get_example_number-1">get_example_number/1</a></td><td>Gets a valid fixed-line number for the specified region.</td></tr>
 <tr><td valign="top"><a href="#get_example_number_for_non_geo_entity-1">get_example_number_for_non_geo_entity/1</a></td><td>Gets a valid number for the specified country calling code for a
   non-geographical entity.</td></tr>
@@ -37,6 +39,9 @@ object passed in.</td></tr>
 <tr><td valign="top"><a href="#get_length_of_geograpical_area_code-1">get_length_of_geograpical_area_code/1</a></td><td> Gets the length of the geographical area code from the PhoneNumber object  
 passed in, so that clients could use it to split a national significant  
 number into geographical area code and subscriber number.</td></tr>
+<tr><td valign="top"><a href="#get_length_of_national_destination_code-1">get_length_of_national_destination_code/1</a></td><td>Gets the length of the national destination code (NDC) from the PhoneNumber
+  object passed in, so that clients could use it to split a national
+  significant number into NDC and subscriber number.</td></tr>
 <tr><td valign="top"><a href="#get_national_significant_number-1">get_national_significant_number/1</a></td><td>Gets the national significant number of a phone number.</td></tr>
 <tr><td valign="top"><a href="#get_ndd_prefix_for_region-2">get_ndd_prefix_for_region/2</a></td><td>Returns the national dialling prefix for a specific region.</td></tr>
 <tr><td valign="top"><a href="#get_number_type-1">get_number_type/1</a></td><td>Gets the type of a phone number.</td></tr>
@@ -171,6 +176,14 @@ representation. Grouping information, as specified by characters such as
 </div><p>Returns the country calling code for a specific region. For example,
   this would be 1 for the United States, and 64 for New Zealand.</p>
 
+<h3 class="function"><a name="get_country_mobile_token-1">get_country_mobile_token/1</a></h3>
+<div class="spec">
+<p><tt>get_country_mobile_token(CountryCallingCode::non_neg_integer()) -&gt; binary()</tt><br></p>
+</div><p>Returns the mobile token for the provided country calling code if it has
+  one, otherwise returns an empty string. A mobile token is a number inserted
+  before the area code when dialing a mobile number from that country from
+  abroad.</p>
+
 <h3 class="function"><a name="get_example_number-1">get_example_number/1</a></h3>
 <div class="spec">
 <p><tt>get_example_number(RegionCode::binary()) -&gt; ValidPhoneNumber::<a href="#type-phonenumber">phonenumber()</a> | {error, unknown_region}</tt><br></p>
@@ -205,12 +218,12 @@ a way that the resultant subscriber number should be diallable, at least on
 some devices. An example of how this could be used:</p>
  
   <pre>  PhoneNumber = phonenumber_util.parse(&lt;&lt;"16502530000"&gt;&gt;,&lt;&lt;"US"&gt;&gt;),
-  NationalSignificatNumber = phonenumber_util.get_national_significant_number(PhoneNumber),
+  NationalSignificantNumber = phonenumber_util.get_national_significant_number(PhoneNumber),
   AreaCodeLength = phonenumber_util.get_lenth_of_geographical_area_code(PhoneNumber),
   {AreaCode, SubscriberNumber} = if
       AreaCodeLength &gt; 0 -&gt;
-           {binary:part(NationalSignificatNumber, AreaCodeLength),
-           SubscriberNumber = binary:part(NationalSignificatNumber, AreaCodeLength, byte_size(NationalSignificatNumber))};
+           {binary:part(NationalSignificantNumber, AreaCodeLength),
+           binary:part(NationalSignificantNumber, AreaCodeLength, byte_size(NationalSignificantNumber))};
       true -&gt;
            {&lt;&lt;&gt;&gt;, NationalSignificatNumber}
   end.</pre>
@@ -232,6 +245,26 @@ in most regions).</p>
 from non-geographical entities.</p>
  
    - some geographical numbers have no area codes.</p>
+
+<h3 class="function"><a name="get_length_of_national_destination_code-1">get_length_of_national_destination_code/1</a></h3>
+<div class="spec">
+<p><tt>get_length_of_national_destination_code(PhoneNumber::<a href="#type-phonenumber">phonenumber()</a>) -&gt; non_neg_integer()</tt><br></p>
+</div><p>Gets the length of the national destination code (NDC) from the PhoneNumber
+  object passed in, so that clients could use it to split a national
+  significant number into NDC and subscriber number. The NDC of a phone
+  number is normally the first group of digit(s) right after the country
+  calling code when the number is formatted in the international format, if
+  there is a subscriber number part that follows.
+  <pre>  PhoneNumber = phonenumber_util:parse(&lt;&lt;"16502530000"&gt;&gt;, &lt;&lt;"US"&gt;&gt;),
+  NationalSignificantNumber = phonenumber_util:get_national_significant_number(PhoneNumber),
+  NationalDestinationCodeLength = phonenumber_util:get_length_of_national_destination_code(PhoneNumber),
+  {NationalDestinationCode, SubscriberNumber} = if
+      NationalDestinationCodeLength &gt; 0 -&gt;
+          {binary:part(NationalSignificantNumber, NationalDestinationCodeLength),
+          binary:part(NationalSignificantNumber, NationalDestinationCodeLength, byte_size(NationalSignificantNumber))};
+      true -&gt;
+      {&lt;&lt;&gt;&gt;, NationalSignificantNumber}
+  end.</pre></p>
 
 <h3 class="function"><a name="get_national_significant_number-1">get_national_significant_number/1</a></h3>
 <div class="spec">
@@ -466,6 +499,6 @@ IsValidNumber().</p>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<p><i>Generated by EDoc, Jan 9 2014, 17:04:48.</i></p>
+<p><i>Generated by EDoc, Jan 13 2014, 13:26:23.</i></p>
 </body>
 </html>
