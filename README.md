@@ -28,5 +28,3 @@ TODO
 
 - finish phonenumber_util:format_by_pattern
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/artefactop/elibphonenumber/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
