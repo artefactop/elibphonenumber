@@ -24,6 +24,15 @@ sudo dpkg -i libphonenumber5_5.9.2_amd64.deb
 rebar compile eunit
 ```
 
+NOTE: Maybe you have to copy some headers files manualy 
+```
+libphonenumber-read-only/cpp/src/phonenumbers$ sudo cp base/template_util.h /usr/include/phonenumbers/base/
+libphonenumber-read-only/cpp/src/phonenumbers$ sudo cp base/logging.h /usr/include/phonenumbers/base/
+libphonenumber-read-only/cpp/src/phonenumbers$ sudo cp base/thread_checker.h /usr/include/phonenumbers/base/
+libphonenumber-read-only/cpp/src/phonenumbers$ sudo cp base/memory/singleton_posix.h /usr/include/phonenumbers/base/memory/
+```
+
+
 TODO 
 
 - finish phonenumber_util:format_by_pattern
