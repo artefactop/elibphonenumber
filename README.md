@@ -26,6 +26,7 @@ rebar compile eunit
 
 NOTE: Maybe you have to copy some headers files manualy 
 ```
+libphonenumber-read-only/cpp/src/phonenumbers$ sudo cp phonenumber.h /usr/include/phonenumbers/
 libphonenumber-read-only/cpp/src/phonenumbers$ sudo cp base/template_util.h /usr/include/phonenumbers/base/
 libphonenumber-read-only/cpp/src/phonenumbers$ sudo cp base/logging.h /usr/include/phonenumbers/base/
 libphonenumber-read-only/cpp/src/phonenumbers$ sudo cp base/thread_checker.h /usr/include/phonenumbers/base/
