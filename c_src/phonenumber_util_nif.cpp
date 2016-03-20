@@ -1,5 +1,5 @@
 #include <erl_nif.h>
-#include <phonenumber.h>
+#include <phonenumber.pb.h>
 #include <phonenumberutil.h>
 #include <memory>
 #include <iostream>
